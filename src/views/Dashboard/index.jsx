@@ -52,15 +52,6 @@ class Dashboard extends Component {
               xl={3}
               xs={12}
             >
-              <Budget className={classes.item} />
-            </Grid>
-            <Grid
-              item
-              lg={3}
-              sm={6}
-              xl={3}
-              xs={12}
-            >
               <Users className={classes.item} />
             </Grid>
             <Grid
@@ -70,8 +61,9 @@ class Dashboard extends Component {
               xl={3}
               xs={12}
             >
-              <Progress className={classes.item} />
+             {null}
             </Grid>
+
             <Grid
               item
               lg={3}
@@ -79,8 +71,9 @@ class Dashboard extends Component {
               xl={3}
               xs={12}
             >
-              <Profit className={classes.item} />
+             {null}
             </Grid>
+
             <Grid
               item
               lg={8}
@@ -97,7 +90,7 @@ class Dashboard extends Component {
               xl={3}
               xs={12}
             >
-              <DevicesChart className={classes.item} />
+              {null}
             </Grid>
             <Grid
               item

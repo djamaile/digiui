@@ -13,7 +13,7 @@ import { Typography } from '@material-ui/core';
 // Material icons
 import {
   ArrowUpward as ArrowUpwardIcon,
-  PeopleOutlined as PeopleIcon
+  MemoryOutlined as PeopleIcon
 } from '@material-ui/icons';
 
 // Shared components
@@ -39,13 +39,13 @@ class Users extends Component {
               className={classes.title}
               variant="body2"
             >
-              TOTAL USERS
+              TOTALE SIMULATIES
             </Typography>
             <Typography
               className={classes.value}
               variant="h3"
             >
-              1600
+              200
             </Typography>
           </div>
           <div className={classes.iconWrapper}>
@@ -64,7 +64,7 @@ class Users extends Component {
             className={classes.caption}
             variant="caption"
           >
-            Since last month
+            Sinds vorig maand
           </Typography>
         </div>
       </Paper>

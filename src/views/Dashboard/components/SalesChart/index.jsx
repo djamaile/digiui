@@ -45,14 +45,14 @@ class SalesChart extends Component {
         className={rootClassName}
       >
         <PortletHeader noDivider>
-          <PortletLabel title="Latest sales" />
+          <PortletLabel title="Recente simulaties" />
           <PortletToolbar>
             <Button
               className={classes.dropdownButton}
               size="small"
               variant="text"
             >
-              Last 7 days <ArrowDropDownIcon />
+              Afgelopen 7 dagen <ArrowDropDownIcon />
             </Button>
           </PortletToolbar>
         </PortletHeader>
@@ -70,7 +70,7 @@ class SalesChart extends Component {
             size="small"
             variant="text"
           >
-            Overview <ArrowRightIcon />
+            Overzicht <ArrowRightIcon />
           </Button>
         </PortletFooter>
       </Portlet>

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-
+import axios from 'axios';
 // Externals
 import classNames from 'classnames';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
-
+import {Link} from 'react-router-dom';
 // Material helpers
 import { withStyles } from '@material-ui/core';
 
@@ -51,20 +51,25 @@ class OrdersTable extends Component {
     isLoading: false,
     limit: 10,
     orders: [],
-    ordersTotal: 0
+    ordersTotal: 0,
+    simulaties: []
   };
 
   async getOrders(limit) {
     try {
       this.setState({ isLoading: true });
+      
 
       const { orders, ordersTotal } = await getOrders(limit);
+      const simulaties = await axios.get("http://localhost:5000/api/SimulationsAPI/1");
+      console.log(simulaties.data);
 
       if (this.signal) {
         this.setState({
           isLoading: false,
           orders,
-          ordersTotal
+          ordersTotal,
+          simulaties: simulaties.data
         });
       }
     } catch (error) {
@@ -75,6 +80,7 @@ class OrdersTable extends Component {
         });
       }
     }
+    
   }
 
   componentDidMount() {
@@ -91,7 +97,7 @@ class OrdersTable extends Component {
 
   render() {
     const { classes, className } = this.props;
-    const { isLoading, orders, ordersTotal } = this.state;
+    const { isLoading, orders, ordersTotal, simulaties } = this.state;
 
     const rootClassName = classNames(classes.root, className);
     const showOrders = !isLoading && orders.length > 0;
@@ -100,18 +106,10 @@ class OrdersTable extends Component {
       <Portlet className={rootClassName}>
         <PortletHeader noDivider>
           <PortletLabel
-            subtitle={`${ordersTotal} in total`}
-            title="Latest orders"
+            subtitle={`${ordersTotal} in totaal`}
+            title="Laatste Simulaties"
           />
           <PortletToolbar>
-            <Button
-              className={classes.newEntryButton}
-              color="primary"
-              size="small"
-              variant="outlined"
-            >
-              New entry
-            </Button>
           </PortletToolbar>
         </PortletHeader>
         <PerfectScrollbar>
@@ -128,8 +126,7 @@ class OrdersTable extends Component {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Order ID</TableCell>
-                    <TableCell align="left">Customer</TableCell>
+                    <TableCell>Simulatie ID</TableCell>
                     <TableCell
                       align="left"
                       sortDirection="desc"
@@ -142,36 +139,23 @@ class OrdersTable extends Component {
                           active
                           direction="desc"
                         >
-                          Date
+                          Datum
                         </TableSortLabel>
                       </Tooltip>
                     </TableCell>
-                    <TableCell align="left">Status</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {orders.map(order => (
-                    <TableRow
+                  {simulaties.map(order => (
+                  <TableRow
                       className={classes.tableRow}
                       hover
-                      key={order.id}
+                      key={order.key}
                     >
-                      <TableCell>{order.id}</TableCell>
-                      <TableCell className={classes.customerCell}>
-                        {order.customer.name}
-                      </TableCell>
+                      <TableCell>{order.key}</TableCell>
+                     
                       <TableCell>
-                        {moment(order.createdAt).format('DD/MM/YYYY')}
-                      </TableCell>
-                      <TableCell>
-                        <div className={classes.statusWrapper}>
-                          <Status
-                            className={classes.status}
-                            color={statusColors[order.status]}
-                            size="sm"
-                          />
-                          {order.status}
-                        </div>
+                        {order.datum}
                       </TableCell>
                     </TableRow>
                   ))}

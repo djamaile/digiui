@@ -32,6 +32,7 @@ const connection = new HubConnectionBuilder()
   .build();
 
 class ProductList extends Component {
+  
   signal = true;
   state = {
     isLoading: false,
@@ -45,10 +46,7 @@ class ProductList extends Component {
     bovenwaarde: 0,
   };
 
-
   handleChange = e => this.setState({ [e.target.name]: e.target.value })
-
-
 
   async getProducts(limit) {
     try {
@@ -61,8 +59,6 @@ class ProductList extends Component {
       });
 
       const spaces = [result.data];
-      const sensors = [];
-
       const { products, productsTotal } = await getProducts(limit);
 
       if (this.signal) {

@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-
 // Externals
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -18,13 +17,15 @@ import {
   Typography,
   CircularProgress
 } from '@material-ui/core';
+import Foto from "../../../../assets/fabriekstockfoto.png";
 
 // Material icons
 import {
   ArrowRight as ArrowRightIcon,
   MoreVert as MoreVertIcon
 } from '@material-ui/icons';
-
+import {appSettings} from '../../../../utils/settings';
+import axios from 'axios';
 // Shared components
 import {
   Portlet,
@@ -45,22 +46,30 @@ class ProductList extends Component {
     limit: 4,
     products: [],
     productsTotal: 0,
-    error: null
+    error: null,
+    productiestraat: []
   };
 
   async getProducts() {
     try {
       this.setState({ isLoading: true });
+      const result = await axios.get(`${appSettings.apiBaseUrl}/spaces?includes=Description`, {
+        headers: {
+          "Authorization": "Bearer " + appSettings.token
+        }
+      });
 
+      const spaces = result.data;
+      
       const { limit } = this.state;
-
       const { products, productsTotal } = await getProducts(limit);
 
       if (this.signal) {
         this.setState({
           isLoading: false,
           products,
-          productsTotal
+          productsTotal,
+          productiestraat: spaces
         });
       }
     } catch (error) {
@@ -101,9 +110,11 @@ class ProductList extends Component {
       );
     }
 
+    console.log();
+    const slices = this.state.productiestraat.splice(0,4);
     return (
       <Fragment>
-        {products.map((product, i) => (
+        {slices.map((product, i) => (
           <div
             className={classes.product}
             key={i}
@@ -112,7 +123,7 @@ class ProductList extends Component {
               <img
                 alt="Product Name"
                 className={classes.productImage}
-                src={product.imageUrl}
+                src={Foto}
               />
             </div>
             <div className={classes.productDetails}>
@@ -121,14 +132,13 @@ class ProductList extends Component {
                   className={classes.productTitle}
                   variant="h5"
                 >
-                  {product.title}
+                  {product.name}
                 </Typography>
               </Link>
               <Typography
                 className={classes.productTimestamp}
                 variant="body2"
               >
-                Updated 5hr ago
               </Typography>
             </div>
             <div>
@@ -155,8 +165,8 @@ class ProductList extends Component {
       >
         <PortletHeader noDivider>
           <PortletLabel
-            subtitle={`${productsTotal} in total`}
-            title="Latest products"
+            subtitle={`4 in totaal`}
+            title="Recente productiestraten"
           />
         </PortletHeader>
         <PortletContent className={classes.portletContent}>
@@ -168,7 +178,7 @@ class ProductList extends Component {
             size="small"
             variant="text"
           >
-            View all <ArrowRightIcon />
+            Overzicht <ArrowRightIcon />
           </Button>
         </PortletFooter>
       </Portlet>
