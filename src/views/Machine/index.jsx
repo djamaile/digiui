@@ -38,6 +38,7 @@ class ProductList extends Component {
     isLoading: false,
     limit: 6,
     products: [],
+    sensors: [],
     productsTotal: 0,
     error: null,
     productiestraat: [],
@@ -59,7 +60,8 @@ class ProductList extends Component {
       });
 
       const spaces = [result.data];
-      console.log(spaces);
+      this.makeJSONSensors(spaces);
+
       const { products, productsTotal } = await getProducts(limit);
 
       if (this.signal) {
@@ -86,6 +88,7 @@ class ProductList extends Component {
 
     const { limit } = this.state;
 
+    this.makeJSONSensors();
     this.getProducts(limit);
   }
 
@@ -93,20 +96,43 @@ class ProductList extends Component {
     this.signal = false;
   }
 
+  makeJSONSensors = (spaces) => {
+    if(spaces) {
+      let sensors = [];
+
+      spaces[0].devices.forEach((device) => {
+        device.sensors.forEach((sensor) => {
+          sensors.push({
+            'DataType': 'Temperature',
+            'HardwareId': sensor.hardwareId,
+            'MachineNaam': device.friendlyName
+          });
+        });
+      });
+
+      console.log(sensors);
+      this.setState({
+        sensors
+      });
+    }
+  }
+
   submitData = () => {
+    const { sensors } = this.state;
+
     this.setState({ simulatieStatus: true })
-    const sensors = [
-      {
-        "DataType": "Temperature",
-        "HardwareId": "daniyal_sensor_2389",
-        "MachineNaam": "daniyal machine"
-      },
-      {
-        "DataType": "Temperature",
-        "HardwareId": "djamaile_sensor_2380",
-        "MachineNaam": "djamaile machine"
-      }
-    ];
+    // const sensors = [
+    //   {
+    //     "DataType": "Temperature",
+    //     "HardwareId": "daniyal_sensor_2389",
+    //     "MachineNaam": "daniyal machine"
+    //   },
+    //   {
+    //     "DataType": "Temperature",
+    //     "HardwareId": "djamaile_sensor_2380",
+    //     "MachineNaam": "djamaile machine"
+    //   }
+    // ];
 
     const simulation = {
       "ProductieStraat": this.state.productiestraat.name,
