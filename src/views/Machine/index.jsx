@@ -52,13 +52,14 @@ class ProductList extends Component {
     try {
       this.setState({ isLoading: true });
 
-      const result = await axios.get(`${appSettings.apiBaseUrl}/spaces/${this.props.match.params.id}?includes=Devices,SensorsTypes,DevicesSensors`, {
+      const result = await axios.get(`${appSettings.apiBaseUrl}/spaces/${this.props.match.params.id}?includes=Devices,DevicesSensors,SensorsTypes`, {
         headers: {
           "Authorization": "Bearer " + token
         }
       });
 
       const spaces = [result.data];
+      console.log(spaces);
       const { products, productsTotal } = await getProducts(limit);
 
       if (this.signal) {

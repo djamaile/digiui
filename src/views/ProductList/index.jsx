@@ -35,7 +35,7 @@ class ProductList extends Component {
     try {
       this.setState({ isLoading: true });
 
-      const result = await axios.get(`${appSettings.apiBaseUrl}/spaces?includes=Description`, {
+      const result = await axios.get(`${appSettings.apiBaseUrl}/spaces?includes=Description&$orderby=Name`, {
         headers: {
           "Authorization": "Bearer " + token
         }
