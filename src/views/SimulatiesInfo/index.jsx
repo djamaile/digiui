@@ -18,6 +18,7 @@ import { ProductsToolbar, ProductCard } from './components';
 import styles from './styles';
 import axios from "axios";
 import { appSettings } from "../../utils/settings";
+import Loader from '../../components/DisplayMode/'
 
 const token = appSettings.token;
 class ProductList extends Component {
@@ -117,10 +118,17 @@ class ProductList extends Component {
 
   render() {
     const { classes } = this.props;
+    console.log(this.state.simulaties.length);
+
+
     return (
       <DashboardLayout title="Generated data">
         <div className={classes.root}>
-          {this.state.simulaties.map(sd => {
+          {this.state.simulaties.length === 0 ? 
+           <div className={classes.progressWrapper}><CircularProgress/></div> 
+          :
+          <div>
+            {this.state.simulaties.map(sd => {
             return(
               <div className={classes.sensorBlok}>
                 <p>machinenaam: {sd.sensor.machineNaam}</p>
@@ -129,6 +137,8 @@ class ProductList extends Component {
               </div>
             );
           })}
+          </div>
+          }
         </div>
       </DashboardLayout>
     );

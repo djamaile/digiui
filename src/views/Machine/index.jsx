@@ -121,21 +121,9 @@ class ProductList extends Component {
     const { sensors } = this.state;
 
     this.setState({ simulatieStatus: true })
-    // const sensors = [
-    //   {
-    //     "DataType": "Temperature",
-    //     "HardwareId": "daniyal_sensor_2389",
-    //     "MachineNaam": "daniyal machine"
-    //   },
-    //   {
-    //     "DataType": "Temperature",
-    //     "HardwareId": "djamaile_sensor_2380",
-    //     "MachineNaam": "djamaile machine"
-    //   }
-    // ];
-
+    const pname = this.state.productiestraat.map(x => x.name).toString();
     const simulation = {
-      "ProductieStraat": this.state.productiestraat.name,
+      "ProductieStraat": pname,
       "KlantId": "1",
       "Bovenwaarde": this.state.bovenwaarde,
       "Onderwaarde": this.state.onderwaarde
@@ -213,7 +201,6 @@ class ProductList extends Component {
 
   render() {
     const { classes } = this.props;
-
     return (
       <DashboardLayout title="Machine's">
         <div className={classes.root}>

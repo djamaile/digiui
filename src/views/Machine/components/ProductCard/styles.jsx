@@ -71,5 +71,8 @@ export default theme => ({
   },
   sensorveld:{
     marginBottom:10
+  },
+  sensorveld2:{
+    marginBottom: 20
   }
 });

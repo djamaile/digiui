@@ -1,3 +1,5 @@
+import { deepOrange, deepPurple } from '@material-ui/core/colors';
+
 export default theme => ({
   root: {
     backgroundColor: theme.palette.common.white,
@@ -31,7 +33,10 @@ export default theme => ({
   },
   avatar: {
     width: '100px',
-    height: '100px'
+    height: '100px',
+      margin: 10,
+      color: '#fff',
+      backgroundColor: deepPurple[500],
   },
   nameText: {
     marginTop: theme.spacing.unit * 2

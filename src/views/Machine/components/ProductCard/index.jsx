@@ -182,6 +182,7 @@ const ProductCard = (props) => {
                     value={hardwareId}
                   />
                 </div>
+                <div className={classes.sensorveld2}>
                 <TextField
                   variant="outlined"
                   required
@@ -190,6 +191,8 @@ const ProductCard = (props) => {
                   value={sensorTypes.sensorTypes.filter((sensorType) => sensorType.id === dataTypeId).map(x => x.name)}
                   classes={classes.sensorveld}
                 />
+                </div>
+                
               </div>
             );
           })}

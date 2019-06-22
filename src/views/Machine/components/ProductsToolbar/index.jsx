@@ -20,7 +20,7 @@ class ProductsToolbar extends Component {
         <div className={classes.row}>
           <SearchInput
             className={classes.searchInput}
-            placeholder="Zoek naar productiestraat"
+            placeholder="Zoek naar machine"
           />
           <span className={classes.spacer} />
           <DisplayMode mode="grid" />
