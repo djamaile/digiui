@@ -19,5 +19,8 @@ export default theme => ({
   },
   sensorBlok:{
     marginBottom:'15px'
+  },
+  button:{
+    marginBottom:15
   }
 });

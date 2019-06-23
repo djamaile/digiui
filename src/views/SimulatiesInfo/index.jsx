@@ -18,7 +18,11 @@ import { ProductsToolbar, ProductCard } from './components';
 import styles from './styles';
 import axios from "axios";
 import { appSettings } from "../../utils/settings";
-import Loader from '../../components/DisplayMode/'
+import Loader from '../../components/DisplayMode/';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import Collapse from '@material-ui/core/Collapse';
+import Button from '@material-ui/core/Button';
+
 
 const token = appSettings.token;
 class ProductList extends Component {
@@ -29,7 +33,8 @@ class ProductList extends Component {
     products: [],
     productsTotal: 0,
     error: null,
-    simulaties: []
+    simulaties: [],
+    checked: false
   };
 
   async getProducts(limit) {
@@ -37,7 +42,7 @@ class ProductList extends Component {
       this.setState({ isLoading: true });
       const simulaties = await axios.get(`http://localhost:5000/api/SensorDataAPI/${this.props.match.params.id}`);
       const { products, productsTotal } = await getProducts(limit);
-      const data = simulaties.data; 
+      const data = simulaties.data;
       if (this.signal) {
         this.setState({
           isLoading: false,
@@ -57,7 +62,7 @@ class ProductList extends Component {
     }
   }
 
-  componentWillUpdate(prevProps){
+  componentWillUpdate(prevProps) {
     if (this.props.simulaties !== prevProps.simulaties) {
       this.fetchData(this.props.simulaties);
     }
@@ -74,6 +79,13 @@ class ProductList extends Component {
     this.signal = false;
     clearInterval(this.intervalId);
   }
+
+  handleChangeShow = () =>  {
+    this.setState((state, props) => {
+      return {checked:!state.checked}
+    });
+  }
+
 
   renderProducts() {
     const { classes } = this.props;
@@ -93,7 +105,6 @@ class ProductList extends Component {
       );
     }
 
-    console.log(simulaties);
     return (
       <Grid
         container
@@ -108,7 +119,7 @@ class ProductList extends Component {
             xs={12}
           >
             <Link to="#">
-              <ProductCard name={product.productieStraat} datum={product.datum}/>
+              <ProductCard name={product.productieStraat} datum={product.datum} />
             </Link>
           </Grid>
         ))}
@@ -116,30 +127,50 @@ class ProductList extends Component {
     );
   }
 
+
+
+
   render() {
     const { classes } = this.props;
-    console.log(this.state.simulaties.length);
-
-
+    const sensorValues = this.state.simulaties.map(x => x.value);
+    const slicedArray = sensorValues.slice(0, 80);
+    const data = slicedArray.map(sensorValue => ({ sensorValue }));
+    console.log(data);
     return (
       <DashboardLayout title="Generated data">
+
         <div className={classes.root}>
-          {this.state.simulaties.length === 0 ? 
-           <div className={classes.progressWrapper}><CircularProgress/></div> 
-          :
-          <div>
-            {this.state.simulaties.map(sd => {
-            return(
-              <div className={classes.sensorBlok}>
-                <p>machinenaam: {sd.sensor.machineNaam}</p>
-                <p>sensornaam: {sd.sensor.hardwareId}</p>
-                <p>sensor value: {sd.value}</p>
-              </div>
-            );
-          })}
-          </div>
+          {this.state.simulaties.length === 0 ?
+            <div className={classes.progressWrapper}><CircularProgress /></div>
+            :
+            <div>
+              <LineChart width={600} height={200} data={data}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Line connectNulls={true} type='monotone' dataKey='sensorValue' stroke='#8884d8' fill='#8884d8' />
+              </LineChart>
+              <Button variant="contained" color="primary" className={classes.button} onClick={this.handleChangeShow}>
+                Ruwe data
+              </Button>
+              <Collapse in={this.state.checked}>
+                {this.state.simulaties.map(sd => {
+                  return (
+                    <div className={classes.sensorBlok}>
+                      <p>machinenaam: {sd.sensor.machineNaam}</p>
+                      <p>sensornaam: {sd.sensor.hardwareId}</p>
+                      <p>sensor value: {sd.value}</p>
+                    </div>
+                  );
+                })}
+              </Collapse>
+
+            </div>
           }
         </div>
+
       </DashboardLayout>
     );
   }

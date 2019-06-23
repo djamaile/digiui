@@ -1,7 +1,6 @@
-# base image
+# Docker file om front-end te hosten
 FROM node:10.9.0
 
-# set working directory
 RUN mkdir /app
 WORKDIR /app
 
@@ -15,9 +14,7 @@ RUN npm install -g serve
 RUN npm rebuild node-sass --force
 RUN npm run build
 
-# start app
 WORKDIR /app
-# start app
 CMD ["serve", "-s", "build"]
 
 EXPOSE 5000
